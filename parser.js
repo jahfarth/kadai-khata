@@ -107,4 +107,7 @@ function parseConfirmation(text) {
   return null;
 }
 
-module.exports = { parseEntry, parseBalanceQuery, parseConfirmation, extractAmount, detectType };
+const parserExports = { parseEntry, parseBalanceQuery, parseConfirmation, extractAmount, detectType };
+// Same file runs in Node (server, tests) and in the browser (static demo).
+if (typeof module !== 'undefined' && module.exports) module.exports = parserExports;
+else globalThis.KhataParser = parserExports;
