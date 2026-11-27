@@ -6,6 +6,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: node test.js
+      - name: Check docs/ is in sync
+        run: |
+          node build-pages.js
+          git diff --exit-code docs
       - name: Start with docker compose and check the main screen
         run: |
           docker compose up --build -d
