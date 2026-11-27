@@ -17,3 +17,15 @@ assert.strictEqual(parseConfirmation('yes save it'), 'yes');
 assert.strictEqual(parseConfirmation('no cancel'), 'no');
 assert.deepStrictEqual(parseConfirmation('amount 250'), { amount: 250 });
 console.log('parser tests passed');
+
+// Shared ledger maths
+const ledger = require('./ledger');
+const sample = [
+  ledger.makeEntry({ customer: 'Ravi', amount: 200, type: 'credit', item: 'rice' }),
+  ledger.makeEntry({ customer: 'Ravi', amount: 50, type: 'payment' }),
+  ledger.makeEntry({ customer: 'Anil', amount: 30, type: 'sale' }),
+];
+assert.strictEqual(ledger.balanceFor(sample, 'ravi').owed, 150);
+assert.deepStrictEqual(ledger.totals(sample), { sales: 30, credit: 200, payments: 50 });
+assert.strictEqual(ledger.balanceFor(sample, 'Nobody'), null);
+console.log('ledger tests passed');
