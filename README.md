@@ -21,6 +21,7 @@ The `docs/` folder is a static copy of the app for GitHub Pages. It has no serve
 - `parser.js`, `ledger.js`: shared by the browser and the server, so the Docker app and the Pages demo behave the same. The parser turns a transcript into a draft entry. It handles digits and some number words, credit, payment and sale wording, and balance questions. This is simple keyword logic, not a language model.
 - `server.js`, `store.js`: a small HTTP server and a JSON file for storage (Docker version).
 - Browser speech services may depend on the browser, device and internet connection.
+- If browser speech is unavailable, stops working or its vendor starts charging, the app shows a message and typing works through the same flow. No paid voice or AI service is used, and no other speech engine is built in.
 
 ## Limits, stated plainly
 
