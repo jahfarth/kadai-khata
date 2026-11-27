@@ -55,7 +55,10 @@ async function handleApi(req, res, url) {
   return send(res, 404, { error: 'not found' });
 }
 
+const SHARED = new Set(['/parser.js', '/ledger.js']); // same code the server uses, served to the browser
+
 function handleStatic(req, res, url) {
+  if (SHARED.has(url.pathname)) return fs.readFile(path.join(__dirname, url.pathname), (err, buf) => (err ? send(res, 404, 'not found', 'text/plain') : send(res, 200, buf, 'text/javascript')));
   let rel = url.pathname === '/' ? '/index.html' : url.pathname;
   const file = path.normalize(path.join(PUBLIC, rel));
   if (!file.startsWith(PUBLIC)) return send(res, 403, 'forbidden', 'text/plain');
