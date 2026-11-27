@@ -23,9 +23,56 @@ function speak(text) {
 function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
 const TYPE_LABEL = { credit: 'credit', payment: 'payment received', sale: 'cash sale' };
 
+// Two backends behind the same calls. With the Node server, entries are stored in its JSON file.
+// On a static host (GitHub Pages) there is no server, so the same parser and ledger code runs in
+// the browser and entries are kept in this browser's localStorage only (per device, not shared).
+const STORE_KEY = 'kadai-khata-ledger-v1';
+let backend = 'server';
+
+function localEntries() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; }
+}
+
+async function localApi(path, options) {
+  const body = options && options.body ? JSON.parse(options.body) : {};
+  const entries = localEntries();
+  if (path === '/api/summary') {
+    const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+    return { today: KhataLedger.totals(entries, startOfDay.getTime()), latest: entries.slice(-5).reverse(), ledger: KhataLedger.balances(entries) };
+  }
+  if (path === '/api/parse') {
+    const who = KhataParser.parseBalanceQuery(body.transcript || '');
+    if (who) {
+      const b = KhataLedger.balanceFor(entries, who);
+      return { kind: 'balance', customer: who, owed: b ? b.owed : 0, known: Boolean(b) };
+    }
+    return { kind: 'entry', ...KhataParser.parseEntry(body.transcript) };
+  }
+  if (path === '/api/entries') {
+    if (!body.customer || !(Number(body.amount) > 0) || !['sale', 'credit', 'payment'].includes(body.type)) {
+      return { error: 'customer, amount and type are required' };
+    }
+    const entry = KhataLedger.makeEntry(body);
+    entries.push(entry);
+    localStorage.setItem(STORE_KEY, JSON.stringify(entries));
+    return entry;
+  }
+  return { error: 'not found' };
+}
+
 async function api(path, options) {
+  if (backend === 'local') return localApi(path, options);
   const res = await fetch(path, options && { ...options, headers: { 'Content-Type': 'application/json' } });
   return res.json();
+}
+
+async function detectBackend() {
+  try {
+    const r = await fetch('/api/summary');
+    if (r.ok && (r.headers.get('content-type') || '').includes('json')) return;
+  } catch { /* no server */ }
+  backend = 'local';
+  $('storage-note').textContent = 'Demo mode: entries are saved only in this browser on this device.';
 }
 
 async function refresh() {
@@ -133,4 +180,4 @@ $('typed').addEventListener('submit', (e) => { e.preventDefault(); const v = $('
 $('c-save').addEventListener('click', save);
 $('c-cancel').addEventListener('click', () => { hideDraft(); setStatus('Discarded.'); });
 setupLanguages();
-refresh();
+detectBackend().then(refresh);
