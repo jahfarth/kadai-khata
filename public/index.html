@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Kadai Khata (prototype)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Kadai Khata</h1>
+    <span class="tag">prototype</span>
+    <label class="lang">Language
+      <select id="lang"></select>
+    </label>
+  </header>
+
+  <main>
+    <section class="totals" aria-label="Today">
+      <div><span id="t-sales">0</span><small>Sales today</small></div>
+      <div><span id="t-credit">0</span><small>Credit given</small></div>
+      <div><span id="t-pay">0</span><small>Payments in</small></div>
+    </section>
+
+    <button id="mic" class="mic" aria-label="Speak an entry">Tap and speak</button>
+    <p id="status" role="status">Say something like: Ravi took rice, 200 rupees on credit</p>
+    <p id="support" class="note"></p>
+
+    <form id="typed" class="typed">
+      <input id="typed-text" placeholder="Or type it here" autocomplete="off">
+      <button>Use text</button>
+    </form>
+
+    <section id="confirm" class="card" hidden>
+      <h2>Check this entry</h2>
+      <p class="heard">Heard: <em id="c-heard"></em></p>
+      <dl>
+        <dt>Customer</dt><dd><input id="c-customer"></dd>
+        <dt>Type</dt><dd>
+          <select id="c-type"><option value="credit">Credit given</option><option value="payment">Payment received</option><option value="sale">Cash sale</option></select></dd>
+        <dt>Amount</dt><dd><input id="c-amount" type="number" min="1"></dd>
+        <dt>Item</dt><dd><input id="c-item"></dd>
+      </dl>
+      <div class="row">
+        <button id="c-save" class="primary">Save (or say yes)</button>
+        <button id="c-cancel">Discard (or say no)</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Latest entries</h2>
+      <ul id="latest"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Customer ledger</h2>
+      <ul id="ledger"></ul>
+      <p class="note">Ask by voice: "Ravi's balance"</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
