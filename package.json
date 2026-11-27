@@ -1,0 +1,1 @@
+{ "name": "kadai-khata", "version": "0.1.0", "description": "Voice ledger prototype for small shops", "main": "server.js", "scripts": { "start": "node server.js", "test": "node test.js" }, "license": "MIT" }
