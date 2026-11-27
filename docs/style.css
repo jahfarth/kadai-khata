@@ -1,0 +1,29 @@
+:root { --ink: #1b1f24; --bg: #f6f3ec; --accent: #0b6b4f; --warn: #a33a1d; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 20px/1.4 system-ui, sans-serif; color: var(--ink); background: var(--bg); }
+header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border-bottom: 2px solid #ddd; flex-wrap: wrap; }
+h1 { margin: 0; font-size: 26px; }
+.tag { background: #ffe9a8; padding: 2px 8px; border-radius: 8px; font-size: 14px; }
+.lang { margin-left: auto; font-size: 14px; }
+main { max-width: 560px; margin: 0 auto; padding: 16px; }
+.totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.totals div { background: #fff; border-radius: 12px; padding: 10px; text-align: center; }
+.totals span { display: block; font-size: 28px; font-weight: 700; }
+.totals small { font-size: 13px; color: #555; }
+.mic { display: block; width: 100%; padding: 36px 12px; font-size: 28px; border: 0; border-radius: 20px; background: var(--accent); color: #fff; }
+.mic.listening { background: var(--warn); }
+.note { font-size: 14px; color: #555; }
+.typed { display: flex; gap: 8px; margin: 12px 0; }
+.typed input { flex: 1; }
+input, select, button { font: inherit; padding: 10px; border-radius: 10px; border: 1px solid #bbb; }
+button { background: #fff; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.card { background: #fff; border-radius: 14px; padding: 12px 16px; margin: 14px 0; }
+.card h2 { margin: 4px 0 8px; font-size: 20px; }
+dl { display: grid; grid-template-columns: 110px 1fr; gap: 6px 8px; align-items: center; }
+dt { color: #555; font-size: 16px; } dd { margin: 0; } dd input, dd select { width: 100%; }
+.row { display: flex; gap: 8px; margin-top: 10px; }
+ul { list-style: none; margin: 0; padding: 0; }
+li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+li:last-child { border: 0; }
+.owed { font-weight: 700; } .owed.pos { color: var(--warn); }
